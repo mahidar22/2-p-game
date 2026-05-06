@@ -46,7 +46,7 @@ export default function ShurikenBambooGame({ navigation }) {
   // Animations
   const powerBarAnim = useRef(new Animated.Value(0)).current;
   const bambooScale = useRef(new Animated.Value(1)).current;
-  const shuriken Spin = useRef(new Animated.Value(0)).current;
+  const shurikenSpin = useRef(new Animated.Value(0)).current; // ✅ Fixed: removed space
 
   // Game timer
   useEffect(() => {
@@ -221,7 +221,7 @@ export default function ShurikenBambooGame({ navigation }) {
     }
 
     // Spin animation
-    Animated.timing(shuriken Spin, {
+    Animated.timing(shurikenSpin, { // ✅ Fixed: removed space
       toValue: 360,
       duration: 500,
       useNativeDriver: false,
