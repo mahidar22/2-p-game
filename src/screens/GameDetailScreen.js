@@ -1,38 +1,99 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import BackButton from '../components/BackButton';
-import GameButton from '../components/GameButton';
-import { COLORS, SPACING, BORDER_RADIUS } from '../styles/theme';
+import {
+  View, Text, TouchableOpacity,
+  StyleSheet, SafeAreaView,
+} from 'react-native';
 
 export default function GameDetailScreen({ route, navigation }) {
   const { game } = route.params;
 
   return (
     <SafeAreaView style={styles.container}>
-      <BackButton onPress={() => navigation.goBack()} />
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}
+      >
+        <Text style={styles.backText}>← Back</Text>
+      </TouchableOpacity>
 
-      <ScrollView>
-        <LinearGradient colors={[game.color, game.color + 'AA']} style={styles.header}>
-          <Text style={styles.icon}>{game.icon}</Text>
-          <Text style={styles.title}>{game.name}</Text>
-        </LinearGradient>
+      <View style={styles.content}>
+        <Text style={styles.emoji}>{game.emoji}</Text>
+        <Text style={styles.title}>{game.name}</Text>
+        <Text style={styles.description}>{game.description}</Text>
 
-        <View style={styles.buttonsContainer}>
-          <GameButton title="Play vs Friend" icon="👥" 
-            onPress={() => navigation.navigate(game.name, { mode: 'pvp' })} />
-          <GameButton title="Play vs Bot" icon="🤖" 
-            onPress={() => navigation.navigate(game.name, { mode: 'bot' })} />
+        <View style={styles.infoRow}>
+          <Text style={styles.infoBadge}>👥 2 Players</Text>
+          <Text style={styles.infoBadge}>🏷️ {game.category}</Text>
         </View>
-      </ScrollView>
+
+        <TouchableOpacity style={styles.playButton}>
+          <Text style={styles.playText}>▶ PLAY NOW</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.background },
-  header: { alignItems: 'center', padding: SPACING.xxl, margin: SPACING.lg, borderRadius: BORDER_RADIUS.lg },
-  icon: { fontSize: 80, marginBottom: SPACING.md },
-  title: { fontSize: 32, fontWeight: 'bold', color: '#FFF' },
-  buttonsContainer: { padding: SPACING.lg },
+  container: {
+    flex: 1,
+    backgroundColor: '#1a1a2e',
+  },
+  backButton: {
+    padding: 16,
+  },
+  backText: {
+    color: '#e94560',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  content: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 24,
+  },
+  emoji: {
+    fontSize: 80,
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  description: {
+    fontSize: 16,
+    color: '#a0a0b0',
+    textAlign: 'center',
+    marginBottom: 24,
+    lineHeight: 24,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    gap: 20,
+    marginBottom: 40,
+  },
+  infoBadge: {
+    color: '#ffffff',
+    fontSize: 14,
+    backgroundColor: '#0f3460',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  playButton: {
+    backgroundColor: '#e94560',
+    paddingHorizontal: 60,
+    paddingVertical: 18,
+    borderRadius: 30,
+  },
+  playText: {
+    color: '#ffffff',
+    fontSize: 20,
+    fontWeight: 'bold',
+    letterSpacing: 2,
+  },
 });

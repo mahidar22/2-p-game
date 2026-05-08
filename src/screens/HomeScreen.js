@@ -1,67 +1,169 @@
 import React, { useState } from 'react';
-import { View, FlatList, StyleSheet, SafeAreaView } from 'react-native';
-import Header from '../components/Header';
-import GameCard from '../components/GameCard';
-import PlayerScore from '../components/PlayerScore';
-import GameButton from '../components/GameButton';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+} from 'react-native';
 import { GAMES_DATA } from '../data/gamesData';
-import { COLORS, SPACING } from '../styles/theme';
+
+const CATEGORIES = ['all', 'arcade', 'board', 'sports', 'action', 'puzzle', 'casual'];
 
 export default function HomeScreen({ navigation }) {
-  const [player1Score, setPlayer1Score] = useState(0);
-  const [player2Score, setPlayer2Score] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState('all');
 
-  const handleGamePress = (game) => {
-    navigation.navigate('GameDetail', { game });
-  };
+  const filteredGames = selectedCategory === 'all'
+    ? GAMES_DATA
+    : GAMES_DATA.filter(g => g.category === selectedCategory);
+
+  console.log('Total games:', GAMES_DATA.length);
+  console.log('Filtered games:', filteredGames.length);
 
   const renderGame = ({ item }) => (
-    <View style={styles.gameCardContainer}>
-      <GameCard game={item} onPress={() => handleGamePress(item)} />
-    </View>
+    <TouchableOpacity
+      style={[styles.card, { borderColor: item.color }]}
+      onPress={() => navigation.navigate('GameDetail', { game: item })}
+    >
+      <Text style={styles.emoji}>{item.icon}</Text>
+      <Text style={styles.title}>{item.name}</Text>
+      <Text style={[styles.category, { color: item.color }]}>
+        {item.category.toUpperCase()}
+      </Text>
+    </TouchableOpacity>
   );
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header
-        title="2 Player Games"
-        onSettingsPress={() => {}}
-        onLanguagePress={() => {}}
-      />
 
-      <View style={styles.scoreContainer}>
-        <PlayerScore player={1} score={player1Score} color={COLORS.player1} />
-        <PlayerScore player={2} score={player2Score} color={COLORS.player2} />
-      </View>
+      <Text style={styles.header}>🎮 2 Player Games</Text>
+      <Text style={styles.subheader}>{GAMES_DATA.length} Games</Text>
 
       <FlatList
-        data={GAMES_DATA}
-        renderItem={renderGame}
-        keyExtractor={(item) => item.id.toString()}
-        numColumns={2}
-        contentContainerStyle={styles.gamesList}
+        data={CATEGORIES}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item) => item}
+        contentContainerStyle={styles.categoryList}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={[
+              styles.categoryBtn,
+              selectedCategory === item && styles.categoryBtnActive,
+            ]}
+            onPress={() => setSelectedCategory(item)}
+          >
+            <Text style={[
+              styles.categoryBtnText,
+              selectedCategory === item && styles.categoryBtnTextActive,
+            ]}>
+              {item.toUpperCase()}
+            </Text>
+          </TouchableOpacity>
+        )}
       />
 
-      <View style={styles.tournamentContainer}>
-        <GameButton
-          title="Play Tournament"
-          icon="🏆"
-          onPress={() => navigation.navigate('Tournament')}
+      {filteredGames.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>No games found</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={filteredGames}
+          renderItem={renderGame}
+          keyExtractor={(item) => item.id.toString()}
+          numColumns={2}
+          contentContainerStyle={styles.grid}
+          showsVerticalScrollIndicator={false}
         />
-      </View>
+      )}
+
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.background },
-  scoreContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingVertical: SPACING.lg,
-    backgroundColor: COLORS.cardBg,
+  container: {
+    flex: 1,
+    backgroundColor: '#1a1a2e',
   },
-  gamesList: { paddingHorizontal: SPACING.sm },
-  gameCardContainer: { flex: 1, maxWidth: '50%' },
-  tournamentContainer: { padding: SPACING.lg, backgroundColor: COLORS.cardBg },
+  header: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    textAlign: 'center',
+    paddingTop: 20,
+    paddingBottom: 4,
+  },
+  subheader: {
+    fontSize: 13,
+    color: '#a0a0b0',
+    textAlign: 'center',
+    marginBottom: 12,
+  },
+  categoryList: {
+    paddingHorizontal: 12,
+    paddingBottom: 12,
+    gap: 8,
+  },
+  categoryBtn: {
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+    borderRadius: 20,
+    backgroundColor: '#16213e',
+    borderWidth: 1,
+    borderColor: '#0f3460',
+    marginRight: 8,
+  },
+  categoryBtnActive: {
+    backgroundColor: '#e94560',
+    borderColor: '#e94560',
+  },
+  categoryBtnText: {
+    color: '#a0a0b0',
+    fontSize: 11,
+    fontWeight: 'bold',
+  },
+  categoryBtnTextActive: {
+    color: '#ffffff',
+  },
+  grid: {
+    padding: 10,
+  },
+  card: {
+    flex: 1,
+    margin: 8,
+    backgroundColor: '#16213e',
+    borderRadius: 12,
+    padding: 16,
+    alignItems: 'center',
+    borderWidth: 2,
+    minHeight: 110,
+    justifyContent: 'center',
+  },
+  emoji: {
+    fontSize: 36,
+    marginBottom: 8,
+  },
+  title: {
+    fontSize: 13,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    textAlign: 'center',
+  },
+  category: {
+    fontSize: 10,
+    marginTop: 4,
+    fontWeight: 'bold',
+  },
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyText: {
+    color: '#ffffff',
+    fontSize: 18,
+  },
 });
