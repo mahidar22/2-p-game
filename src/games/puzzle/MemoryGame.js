@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert, SafeAreaView } from 'react-native';
-import { COLORS, SPACING, BORDER_RADIUS } from '../../styles/theme';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../../styles/theme';
 
 const EMOJIS = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼'];
 

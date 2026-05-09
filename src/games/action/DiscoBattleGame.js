@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
-import { COLORS, SPACING, BORDER_RADIUS } from '../styles/theme';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../styles/theme';
 
 const { width, height } = Dimensions.get('window');
 

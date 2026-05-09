@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert, SafeAreaView } from 'react-native';
-import { COLORS, SPACING, BORDER_RADIUS } from '../../styles/theme';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../../styles/theme';
 
 const CHOICES = ['Rock', 'Paper', 'Scissors'];
 const EMOJIS = ['✊', '✋', '✌️'];

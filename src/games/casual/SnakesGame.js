@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import GameCanvas from '../../components/GameCanvas';
-import { COLORS, SPACING } from '../../styles/theme';
+import { COLORS, SPACING } from '../../../styles/theme';
 
 export default function SnakesGame({ navigation, route }) {
   const { mode } = route.params || {};

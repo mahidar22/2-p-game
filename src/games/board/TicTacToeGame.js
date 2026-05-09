@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert, SafeAreaView } from 'react-native';
-import { COLORS, SPACING, BORDER_RADIUS } from '../../styles/theme';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../../styles/theme';
 
 export default function TicTacToeGame({ navigation }) {
   const [board, setBoard] = useState(Array(9).fill(null));
